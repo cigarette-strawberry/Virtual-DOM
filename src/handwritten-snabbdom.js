@@ -1,7 +1,10 @@
-import h from "./my-snabbdom/h.js";
-import patch from "./my-snabbdom/patch.js";
+import h from './my-snabbdom/h.js'
+import patch from './my-snabbdom/patch.js'
 
-const myButton1 = h("button", {}, "click me");
-const container = document.getElementById("container");
+const myButton1 = h('span', {}, '上树')
+const container = document.getElementById('container')
+const btn = document.getElementById('btn')
 
-patch(container, myButton1);
+btn.onclick = function () {
+  patch(container, myButton1)
+}
