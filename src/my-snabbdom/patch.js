@@ -12,6 +12,14 @@ export default function patch(oldVnode, newVnode) {
     console.log('是同一个节点，递归进行精细化比较')
   } else {
     console.log('不是同一个节点，暴力删除旧的，插入新的')
-    createElement(newVnode, oldVnode.elm)
+    const newVnodeElm = createElement(newVnode)
+    // 插入到老节点之前 上树
+    if(oldVnode.elm.parentNode && newVnodeElm) {
+      oldVnode.elm.parentNode.insertBefore(newVnodeElm, oldVnode.elm)
+    }
+    // 删除旧的节点
+    if(oldVnode.elm && oldVnode.elm.parentNode) {
+      oldVnode.elm.parentNode.removeChild(oldVnode.elm)
+    }
   }
 }
