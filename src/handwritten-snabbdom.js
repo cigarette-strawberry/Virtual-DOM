@@ -15,13 +15,9 @@ const myButton2 = h("ul", {}, [
 ]);
 
 const myButton3 = h("ul", {}, [
-  h("li", { key: "2" }, "上树2"),
-  h("li", { key: "3" }, "上树3"),
-  h("li", { key: "7" }, "上树7"),
-  h("li", { key: "8" }, "上树8"),
   h("li", { key: "4" }, "上树4"),
-  h("li", { key: "9" }, "上树9"),
-  h("li", { key: "1" }, "上树1"),
+  h("li", { key: "3" }, "上树3"),
+  h("li", { key: "2" }, "上树2"),
 ]);
 
 patch(container, myButton2);

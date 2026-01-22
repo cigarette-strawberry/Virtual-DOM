@@ -33,5 +33,11 @@
     命中一种就不再进行命中判断
     如果都没有命中，就需要用循环来查找
 
+    如果旧节点先循环完毕，说明新节点中有需要插入的节点。(新增节点)
+    如果新节点先循环完毕，说明旧节点中有需要删除的节点。(删除节点)
+    移动时需要虚拟节点变为undefined 真实节点移动到前方或者后方
+
+    while (oldHeadIndex <= oldTailIndex && newHeadIndex <= newTailIndex) {}
+
 
 3、虚拟DOM如何通过diff变为真正的DOM？涵盖在diff算法里面。

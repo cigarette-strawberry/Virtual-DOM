@@ -1,4 +1,5 @@
 import createElement from "./createElement";
+import updateChildren from "./updateChildren";
 
 export default function patchVnode(oldVnode, newVnode) {
   // 判断 新旧Vnode 是否是同一个对象
@@ -16,7 +17,9 @@ export default function patchVnode(oldVnode, newVnode) {
   } else {
     // 新的Vnode 没有text属性 存在children
     if (oldVnode.children !== undefined && oldVnode.children.length > 0) {
-      // 双指针
+      updateChildren(oldVnode.elm, oldVnode.children, newVnode.children);
+      // 老的Vnode有children，新的Vnode也有children，最复杂情况
+      /* // 双指针
       let unIndex = 0;
       for (let i = 0; i < newVnode.children.length; i++) {
         const iCh = newVnode.children[i];
@@ -39,7 +42,7 @@ export default function patchVnode(oldVnode, newVnode) {
         } else {
           unIndex++;
         }
-      }
+      } */
     } else {
       // 老的Vnode没有children，新的有
       // 清空老的节点内容
