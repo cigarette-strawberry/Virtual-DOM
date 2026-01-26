@@ -1,4 +1,5 @@
 import patchVnode from "./patchVnode";
+import createElement from "./createElement";
 // 判断是否是同一个虚拟节点
 function checkSameVnode(oldVnode, newVnode) {
   return oldVnode.sel === newVnode.sel && oldVnode.key === newVnode.key;
@@ -18,8 +19,20 @@ export default function updateChildren(parentElm, oldChildren, newChildren) {
   let oldEndVnode = oldChildren[oldEndIdx];
   let newEndVnode = newChildren[newEndIdx];
 
+  let keyMap = {};
+
   while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
-    if (checkSameVnode(oldStartVnode, newStartVnode)) {
+    console.log("⭐");
+
+    if (oldStartVnode == undefined) {
+      oldStartVnode = oldChildren[++oldStartIdx];
+    } else if (oldEndVnode == undefined) {
+      oldEndVnode = oldChildren[--oldEndIdx];
+    } else if (newStartVnode == undefined) {
+      newStartVnode = newChildren[++newStartIdx];
+    } else if (newEndVnode == undefined) {
+      newEndVnode = newChildren[--newEndIdx];
+    } else if (checkSameVnode(oldStartVnode, newStartVnode)) {
       // 新节点头部索引 老节点头部索引
       console.log("🚀 ~ updateChildren ~ ①新节点头部索引 老节点头部索引:");
       patchVnode(oldStartVnode, newStartVnode);
@@ -45,6 +58,51 @@ export default function updateChildren(parentElm, oldChildren, newChildren) {
       parentElm.insertBefore(oldEndVnode.elm, oldStartVnode.elm);
       oldEndVnode = oldChildren[--oldEndIdx];
       newStartVnode = newChildren[++newStartIdx];
+    } else {
+      // 四个都没命中
+      for (let i = oldStartIdx; i <= oldEndIdx; i++) {
+        const key = oldChildren[i].key;
+        if (key !== undefined) {
+          keyMap[key] = i;
+        }
+      }
+
+      const idxInOld = keyMap[newStartVnode.key];
+
+      if (idxInOld === undefined) {
+        // 不存在是新添加的
+        parentElm.insertBefore(createElement(newStartVnode), oldStartVnode.elm);
+      } else {
+        // 移动
+        const eleToMove = oldChildren[idxInOld];
+        patchVnode(eleToMove, newStartVnode);
+        oldChildren[idxInOld] = undefined;
+        parentElm.insertBefore(eleToMove.elm, oldStartVnode.elm);
+      }
+      newStartVnode = newChildren[++newStartIdx];
+    }
+  }
+
+  if (newStartIdx <= newEndIdx) {
+    console.log("newChildren中还有剩余节点未处理，添加");
+
+    const before =
+      newChildren[newEndIdx + 1] == null
+        ? null
+        : newChildren[newEndIdx + 1].elm;
+    for (let i = newStartIdx; i <= newEndIdx; i++) {
+      const element = newChildren[i];
+      // insertBefore方法可以自动识别出null，将dom挂载到最后面
+      const dom = createElement(element);
+      parentElm.insertBefore(dom, before);
+    }
+  } else if (oldStartIdx <= oldEndIdx) {
+    console.log("oldChildren中还有剩余节点未处理，删除");
+    for (let i = oldStartIdx; i <= oldEndIdx; i++) {
+      const element = oldChildren[i];
+      if (element) {
+        parentElm.removeChild(element.elm);
+      }
     }
   }
 }
