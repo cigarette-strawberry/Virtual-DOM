@@ -4,8 +4,23 @@
 
 1、虚拟DOM如何被渲染函数（h函数）产生？
     h函数用来产生 虚拟节点（vNode）
+        // children 嵌套 虚拟节点
+        // data 节点属性
+        // elm 真实DOM节点
+        // key 节点唯一标识
+        // sel 节点标签
+        // text 节点文本内容
     {
-        children: [],
+        children: [
+            {
+                children: [],
+                data: {},
+                elm: undefined,
+                key: undefined,
+                sel: 'div',
+                text: '虚拟DOM'
+            }
+        ],
         data: {},
         elm: undefined,
         key: undefined,

@@ -24,13 +24,13 @@ export default function updateChildren(parentElm, oldChildren, newChildren) {
   while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
     console.log("⭐");
 
-    if (oldStartVnode == undefined) {
+    if (oldStartVnode == undefined || oldChildren[oldStartIdx] == null) {
       oldStartVnode = oldChildren[++oldStartIdx];
-    } else if (oldEndVnode == undefined) {
+    } else if (oldEndVnode == undefined || oldChildren[oldEndIdx] == null) {
       oldEndVnode = oldChildren[--oldEndIdx];
-    } else if (newStartVnode == undefined) {
+    } else if (newStartVnode == undefined || newChildren[newStartIdx] == null) {
       newStartVnode = newChildren[++newStartIdx];
-    } else if (newEndVnode == undefined) {
+    } else if (newEndVnode == undefined || newChildren[newEndIdx] == null) {
       newEndVnode = newChildren[--newEndIdx];
     } else if (checkSameVnode(oldStartVnode, newStartVnode)) {
       // 新节点头部索引 老节点头部索引
@@ -61,7 +61,7 @@ export default function updateChildren(parentElm, oldChildren, newChildren) {
     } else {
       // 四个都没命中
       for (let i = oldStartIdx; i <= oldEndIdx; i++) {
-        const key = oldChildren[i].key;
+        const key = oldChildren[i]?.key;
         if (key !== undefined) {
           keyMap[key] = i;
         }

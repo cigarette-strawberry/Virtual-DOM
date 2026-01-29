@@ -17,7 +17,7 @@ export default function createElement(vnode) {
     })
   }
 
-  // 补充elm属性
+  // 补充elm元素属性
   vnode.elm = domNode
 
   return vnode.elm

@@ -17,6 +17,8 @@ export default function patch(oldVnode, newVnode) {
     console.log('不是同一个节点，暴力删除旧的，插入新的')
     const newVnodeElm = createElement(newVnode)
     // 插入到老节点之前 上树
+    // oldVnode.elm.parentNode 表示父节点
+    
     if (oldVnode.elm.parentNode && newVnodeElm) {
       oldVnode.elm.parentNode.insertBefore(newVnodeElm, oldVnode.elm)
     }
